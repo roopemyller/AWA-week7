@@ -23,7 +23,7 @@ router.post('/api/user/register/', async (req, res) => {
         const hashedPassword = await bcrypt_1.default.hash(password, saltRounds);
         const newUser = { email, password: hashedPassword };
         users.push(newUser);
-        res.status(201).json(newUser);
+        res.status(200).json(newUser);
         return;
     }
     catch (error) {

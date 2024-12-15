@@ -27,7 +27,7 @@ router.post('/api/user/register/', async (req, res) => {
         const newUser = {email, password: hashedPassword}
         users.push(newUser)
         
-        res.status(201).json(newUser)
+        res.status(200).json(newUser)
         return
     } catch (error) {
         console.log(error)
