@@ -16,6 +16,11 @@ app.use(morgan("dev"))
 
 app.use(express.static(path.join(__dirname, "../public")))
 
+app.use((req, res, next) => {
+    res.setHeader('Content-Security-Policy', "script-src 'self'");
+    next();
+})
+
 app.use("/", router)
 
 app.listen(port, () => {
