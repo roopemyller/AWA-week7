@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const router = (0, express_1.Router)();
 const users = [];
 router.post('/api/user/register/', async (req, res) => {
@@ -24,6 +25,31 @@ router.post('/api/user/register/', async (req, res) => {
         const newUser = { email, password: hashedPassword };
         users.push(newUser);
         res.status(200).json(newUser);
+        return;
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+router.post('/api/user/login', async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        res.status(400).json({ message: 'No email or password' });
+        return;
+    }
+    try {
+        const user = users.find((user) => user.email === email);
+        if (!user) {
+            res.status(404).json({ message: 'User not found' });
+            return;
+        }
+        const isPasswordValid = await bcrypt_1.default.compare(password, user.password);
+        if (!isPasswordValid) {
+            res.status(401).json({ message: 'Invalid credentials' });
+            return;
+        }
+        const token = jsonwebtoken_1.default.sign({ email: user.email }, process.env.SECRET, { expiresIn: '1h' });
+        res.status(200).json({ token });
         return;
     }
     catch (error) {
