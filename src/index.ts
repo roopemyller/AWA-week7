@@ -67,7 +67,7 @@ router.post('/api/user/login', async (req, res) => {
 })
 
 router.get('/api/private', validateToken, (req: Request, res: Response) => {
-    res.status(200).json({ message: 'This is a protected secure route!' })
+    res.status(200).json({ message: 'This is protected secure route!' })
 })
 
 router.get('/api/user/list', (req, res) => {
