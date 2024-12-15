@@ -31,6 +31,7 @@ async function login() {
         const data = await response.json()
         alert('Login successfull!')
         localStorage.setItem('token', data.token)
+        window.location.href = '/'
     } else {
         alert('Login failed!');
     }

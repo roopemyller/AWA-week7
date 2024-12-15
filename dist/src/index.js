@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const validateToken_1 = __importDefault(require("./middleware/validateToken"));
 const router = (0, express_1.Router)();
 const users = [];
 router.post('/api/user/register/', async (req, res) => {
@@ -55,6 +56,9 @@ router.post('/api/user/login', async (req, res) => {
     catch (error) {
         console.log(error);
     }
+});
+router.get('/api/private', validateToken_1.default, (req, res) => {
+    res.status(200).json({ message: 'This is a protected secure route!' });
 });
 router.get('/api/user/list', (req, res) => {
     res.status(200).json(users);

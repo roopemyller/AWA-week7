@@ -3,6 +3,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken"
 import dotenv from 'dotenv'
+import validateToken from './middleware/validateToken'
 
 const router: Router = Router()
 
@@ -65,9 +66,13 @@ router.post('/api/user/login', async (req, res) => {
     }
 })
 
+router.get('/api/private', validateToken, (req: Request, res: Response) => {
+    res.status(200).json({ message: 'This is a protected secure route!' })
+})
+
 router.get('/api/user/list', (req, res) => {
     res.status(200).json(users);
-});
+})
 
 
 export default router
