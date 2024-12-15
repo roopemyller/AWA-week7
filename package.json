@@ -25,6 +25,7 @@
     "@types/mongoose": "^5.11.96",
     "@types/morgan": "^1.9.9",
     "@types/nodemon": "^1.19.6",
+    "nodemon": "^3.1.9",
     "tsc-watch": "^6.2.1"
   }
 }
