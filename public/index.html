@@ -4,37 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="main.js" defer></script>
 </head>
 <body>
     <h1>Welcome to the Private Page</h1>
     <div id="message"></div>
-    <button id="logoutBtn">Logout</button>
-    <script>
-        const token = localStorage.getItem('token');
-        
-        if (!token) {
-            window.location.href = '/login.html';
-        } else {
-            fetch('/api/private', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => {
-                if (response.status === 200) {
-                    return response.json();
-                } else {
-                    throw new Error('Authentication failed');
-                }
-            })
-            .then(data => {
-                document.getElementById('message').innerText = data.message;
-            })
-            .catch(error => {
-                document.getElementById('message').innerText = error.message;
-            });
-        }
-    </script>
+    <button id="logout">Logout</button>
 </body>
 </html>

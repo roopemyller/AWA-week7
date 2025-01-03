@@ -37,23 +37,70 @@ async function login() {
     }
 }
 
+async function validateToken() {
+    const token = localStorage.getItem('token');
+        
+    if (token) {
+        try {
+            const response = await fetch('/api/private', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (response.ok) {
+                const data = await response.json()
+                console.log(data.message)
+            } else {
+                alert('Session expired or invalid token!')
+                window.location.href = '/login.html'
+            }
+        } catch (error) {
+            console.error('Error validating token:', error)
+            alert('Error validating token!')
+            window.location.href = '/login.html'
+        }
+    } else {
+        window.location.href = '/login.html'
+    }
+}
+
+async function logout() {
+    localStorage.removeItem('token')
+    
+    window.location.href = '/login.html'
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const path = window.location.pathname
+    console.log("The path is", path)
 
     if(path.includes('register.html')){
-        console.log("registerissä ollaan")
         const registerForm = document.getElementById('registerForm')
         registerForm.addEventListener('submit', (e) => {
             e.preventDefault()
-            console.log("register")
             register()
         })
     }else if(path.includes('login.html')){
         const loginForm = document.getElementById('loginForm')
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault()
-            console.log("login")
             login()
         })
+    }else if (path === '/'){
+        console.log("index.html")
+        
+        validateToken()
+
+        const token = localStorage.getItem('token')
+        if(token){
+            const logoutButton = document.getElementById('logout')
+            if(logoutButton){
+                logoutButton.addEventListener('click', logout)
+            }
+        }else {
+            window.location.href = '/login.html'
+        }
     }
 })
